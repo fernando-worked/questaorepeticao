@@ -15,7 +15,11 @@ router.post('/novoUsuario', async (req, res) => {
     if (!EmailValidator.validate(req.body.txemail))
         return res.status(406).send('E-mail inválido!');
     if (await emailJaCadastrado(req.body.txemail)) {
+<<<<<<< HEAD
         return res.status(406).send('E-mail já cadastrado!');
+=======
+        return res.status(406).send('E-mail já cadastrado!!');  
+>>>>>>> 3f82c2777d6aad1f21118066565fb3c0fc6dc0db
     }
 
     const usuario = new Usuario(req.body.txemail, req.body.txsenha);
