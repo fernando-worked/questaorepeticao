@@ -33,15 +33,19 @@ const UserRepository_1 = require("../../model/repository/UserRepository");
 const UserModel_1 = require("../../model/UserModel");
 const UserController_1 = require("../../controller/UserController");
 const EmailValidator = __importStar(require("email-validator"));
+const RespostaModel_1 = require("../../model/RespostaModel");
 const router = (0, express_1.Router)();
 router.get('/', (req, res) => {
-    res.status(200).send('API ONs');
+    res.status(200).send('API ON');
 });
 router.post('/novoUsuario', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!EmailValidator.validate(req.body.txemail))
-        return res.status(406).send('E-mail inválido');
+    const resposta = new RespostaModel_1.Resposta();
+    if (!EmailValidator.validate(req.body.txemail)) {
+        resposta.setContent('E-mail inválido!');
+        return res.status(406).send(resposta);
+    }
     if (yield (0, UserRepository_1.emailJaCadastrado)(req.body.txemail)) {
-        return res.status(406).send('E-mail já cadastrado');
+        return res.status(406).send('E-mail já cadastrado!');
     }
     const usuario = new UserModel_1.Usuario(req.body.txemail, req.body.txsenha);
     const usercontroler = new UserController_1.UserController(usuario);
