@@ -9,19 +9,29 @@ const router = Router();
 
 router.get('/', (req, res) => {
     res.status(200).send('API ON');
-}) 
+})
 
 router.post('/novoUsuario', async (req, res) => {
     const resposta = new Resposta();
-    if (!EmailValidator.validate(req.body.txemail)) { 
+    if (!EmailValidator.validate(req.body.txemail)) {
+
+        resposta.setSucess(false);
+        resposta.setCode(406);
         resposta.setContent('E-mail inválido!');
-        return res.status(406).send(resposta);
-    } 
+
+        return res.status(406).json(resposta);
+    }
 
     if (await emailJaCadastrado(req.body.txemail)) {
-        return res.status(406).send('E-mail já cadastrado!');
+
+        resposta.setSucess(false);
+        resposta.setCode(406);
+        resposta.setContent('E-mail já cadastrado!');
+
+        return res.status(406).json(resposta);
+
     }
-  
+
     const usuario = new Usuario(req.body.txemail, req.body.txsenha);
     const usercontroler = new UserController(usuario);
 

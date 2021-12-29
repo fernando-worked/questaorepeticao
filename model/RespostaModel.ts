@@ -19,15 +19,15 @@ export class Resposta {
         return this.content;
     }
 
-    set setContent(content: any) {
+    setContent(content: any) {
         this.content = content;
     }
 
-    set setCode(code: number) {
+    setCode(code: number) {
         this.code = code;
     }
 
-    set setSucess(sucess: boolean) {
+    setSucess(sucess: boolean) {
         this.sucess = sucess;
     }
 }
