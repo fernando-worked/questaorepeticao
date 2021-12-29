@@ -21,7 +21,7 @@ router.post('/novoUsuario', async (req, res) => {
     if (await emailJaCadastrado(req.body.txemail)) {
         return res.status(406).send('E-mail já cadastrado!');
     }
- 
+  
     const usuario = new Usuario(req.body.txemail, req.body.txsenha);
     const usercontroler = new UserController(usuario);
 
