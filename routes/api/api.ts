@@ -37,7 +37,11 @@ router.post('/novoUsuario', async (req, res) => {
 
     usercontroler.salvarUsuario();
 
-    return res.status(201).send('API ON');
+    resposta.setSucess(true);
+    resposta.setCode(201);
+    resposta.setContent(usuario.getId);
+
+    return res.status(201).json(resposta);
 
 })
 
