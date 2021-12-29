@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.post('/novoUsuario', async (req, res) => {
     const resposta = new Resposta();
-    if (!EmailValidator.validate(req.body.txemail)) {
+    if (!EmailValidator.validate(req.body.txemail)) { 
         resposta.setContent('E-mail inválido!');
         return res.status(406).send(resposta);
     } 
