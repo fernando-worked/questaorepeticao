@@ -7,8 +7,8 @@ import * as EmailValidator from 'email-validator';
 const router = Router();
 
 router.get('/', (req, res) => {
-    res.status(200).send('API ONs');
-})
+    res.status(200).send('API ON');
+}) 
 
 
 router.post('/novoUsuario', async (req, res) => {
