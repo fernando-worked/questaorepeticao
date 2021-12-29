@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
     res.status(200).send('API ON');
 })
 
+//login 
 router.post('/novoUsuario', async (req, res) => {
     if (!EmailValidator.validate(req.body.txemail))
         return res.status(406).send('E-mail inválido!');
