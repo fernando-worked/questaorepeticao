@@ -20,6 +20,8 @@
   },
   "scripts": {
     "start": "tsc && nodemon ./dist/app"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,ts"
   }
-}  
-  
+} 

@@ -84,9 +84,9 @@ router.post('/login', async (req, res) => {
         res.cookie('TOKEN', token); 
     } 
 
-    return res.status(200).json(resposta); 
+    return res.status(200).json(resposta);  
 
-})
+}) 
 
 router.post('/cookie', async (req, res) => {
     res.cookie('cookieName', 'cookieValue').send();
