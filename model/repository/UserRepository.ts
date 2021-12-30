@@ -19,9 +19,8 @@ export async function findUserByCredentials(txemail: string, txsenha: string): P
 
     var usuario = new Usuario();
     usuario.setId(result.rows[0].idusuario);
-    usuario.setEmail(txemail);
+    usuario.setEmail(txemail); 
     return usuario;
-
 
 }
 
