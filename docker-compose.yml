@@ -3,11 +3,17 @@ services:
   app:
     image: app
     working_dir: /usr/src/app/
-    command: node app
+    command: node ./dist/app
     ports:
       - 3000:3000
-    volumes:  
-      - /usr/src/app/
-      - /usr/src/node_modules/
-
+    environment:
+      HOST: db 
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: F@tec123
+      POSTGRES_DB: testes
+    ports:
+      - "5432:5432"
  

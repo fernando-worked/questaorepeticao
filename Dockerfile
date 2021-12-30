@@ -1,3 +1,4 @@
+#usar versao alpine, é bem mais leve#
 FROM node:latest
 
 # Create app directory
