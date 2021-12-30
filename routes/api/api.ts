@@ -38,6 +38,7 @@ router.post('/novoUsuario', async (req, res) => {
     const usuario = new Usuario();
     usuario.setEmail(req.body.txemail);
     usuario.setSenha(req.body.txsenha);
+
     const usercontroler = new UserController(usuario);
 
     usercontroler.salvarUsuario();
@@ -63,15 +64,18 @@ router.post('/login', async (req, res) => {
 
 
     const usuario = new Usuario();
-    usuario.setEmail(req.body.txemail);
-    usuario.setSenha(req.body.txsenha); 
-
     const usercontroler = new UserController(usuario);
 
-    usercontroler.salvarUsuario();
+    usercontroler.findUserByCredentials(req.body.txemail, req.body.txsenha);
+
+    if (usuario == undefined) {
+        resposta.setSucess(false);
+        resposta.setCode(200);
+        resposta.setContent('Credencial inválida!');
+    } 
 
     resposta.setSucess(true);
-    resposta.setCode(201);
+    resposta.setCode(200);
     resposta.setContent(usuario.getId);
 
     return res.status(201).json(resposta);
