@@ -28,17 +28,16 @@ export class UserController {
         saveUser(this.usuario);
     }
 
-    public findUserByCredentials(txemail: string, txsenha: string): Promise<Usuario | undefined> {
+    public async findUserByCredentials(txemail: string, txsenha: string) {
         var senhaHash = crypto.createHash('md5')
             .update(txemail)
             .update(txsenha)
             .update(process.env.PASSWORD_SECRET)
             .digest("hex");
 
-        var usuario = findUserByCredentials(txemail, senhaHash);
-        console.log('dentro do controller ' + usuario)
-        return usuario;
-    }
-}
+        var usuario = await findUserByCredentials(txemail, senhaHash);
+        this.usuario = usuario;  
+    }  
+}  
 
 module.exports = { UserController }  

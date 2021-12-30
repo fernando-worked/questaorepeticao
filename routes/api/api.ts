@@ -62,23 +62,22 @@ router.post('/login', async (req, res) => {
         return res.status(406).json(resposta);
     }
 
-
     const usuario = new Usuario();
     const usercontroler = new UserController(usuario);
 
-    usercontroler.findUserByCredentials(req.body.txemail, req.body.txsenha);
+    await usercontroler.findUserByCredentials(req.body.txemail, req.body.txsenha);
 
-    if (usuario == undefined) {
+    if (usercontroler.usuario.getEmail.length == 0) { 
         resposta.setSucess(false);
-        resposta.setCode(200);
+        resposta.setCode(200); 
         resposta.setContent('Credencial inválida!');
-    } 
+    } else {
+        resposta.setSucess(true);
+        resposta.setCode(200);
+        resposta.setContent(usercontroler.usuario);
+    }
 
-    resposta.setSucess(true);
-    resposta.setCode(200);
-    resposta.setContent(usuario.getId);
-
-    return res.status(201).json(resposta);
+    return res.status(200).json(resposta);
 
 })
 
