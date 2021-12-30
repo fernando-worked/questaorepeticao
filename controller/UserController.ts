@@ -5,15 +5,20 @@ var crypto = require('crypto');
 
 
 export class UserController {
-    usuario: Usuario;
+    private usuario: Usuario;
 
     constructor(usuario: Usuario) {
         this.usuario = usuario;
     }
 
-    public setUser(usuario: Usuario) {
+    setUser(usuario: Usuario) {
         this.usuario = usuario;
     }
+
+    get getUser() {
+        return this.usuario;
+    }
+
 
     public salvarUsuario() {
         this.usuario.setId(uuidv4());
@@ -36,8 +41,8 @@ export class UserController {
             .digest("hex");
 
         var usuario = await findUserByCredentials(txemail, senhaHash);
-        this.usuario = usuario;  
-    }  
-}  
+        this.usuario = usuario;
+    }
+}
 
 module.exports = { UserController }  

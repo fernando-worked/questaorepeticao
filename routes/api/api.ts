@@ -4,6 +4,7 @@ import { Usuario } from '../../model/UserModel'
 import { UserController } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
+var jwt = require('jsonwebtoken');
 
 const router = Router();
 
@@ -62,19 +63,24 @@ router.post('/login', async (req, res) => {
         return res.status(406).json(resposta);
     }
 
-    const usuario = new Usuario();
+    var usuario = new Usuario();
     const usercontroler = new UserController(usuario);
 
     await usercontroler.findUserByCredentials(req.body.txemail, req.body.txsenha);
 
-    if (usercontroler.usuario.getEmail.length == 0) { 
+    if (usercontroler.getUser.getEmail.length == 0) {
         resposta.setSucess(false);
-        resposta.setCode(200); 
+        resposta.setCode(200);
         resposta.setContent('Credencial inválida!');
     } else {
+        usuario = usercontroler.getUser; 
+        const token = jwt.sign({usuario}, process.env.JWT_SECRET, {
+            expiresIn: 60 * 60 * 12 // expires in 12h 
+        });     
+  
         resposta.setSucess(true);
         resposta.setCode(200);
-        resposta.setContent(usercontroler.usuario);
+        resposta.setContent(token);  
     }
 
     return res.status(200).json(resposta);
