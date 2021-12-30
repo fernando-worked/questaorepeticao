@@ -73,19 +73,28 @@ router.post('/login', async (req, res) => {
         resposta.setCode(200);
         resposta.setContent('Credencial inválida!');
     } else {
-        usuario = usercontroler.getUser; 
-        const token = jwt.sign({usuario}, process.env.JWT_SECRET, {
+        usuario = usercontroler.getUser;
+        const token = jwt.sign({ usuario }, process.env.JWT_SECRET, {
             expiresIn: 60 * 60 * 12 // expires in 12h 
-        });     
-  
+        });
+
         resposta.setSucess(true);
         resposta.setCode(200);
-        resposta.setContent(token);  
+        resposta.setContent(token);
+        res.cookie('TOKEN', token); 
     }
 
     return res.status(200).json(resposta);
 
 })
 
+router.post('/cookie', async (req, res) => {
+    res.cookie('cookieName', 'cookieValue').send();
+})
+router.get('/cookie', async (req, res) => {
+    console.log(req.cookies);
+    res.status(200).send(req.cookies);
+})
 
-export default router;  
+
+export default router;   

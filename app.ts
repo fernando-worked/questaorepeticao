@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config(); 
 app.use(bodyParser.json());
+import cookieParser from 'cookie-parser';
+app.use(cookieParser()); 
 
 app.use('/', navigationRoutes);
 app.use('/api', apiRoutes);
