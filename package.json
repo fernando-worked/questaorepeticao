@@ -19,7 +19,9 @@
     "@types/uuid": "^8.3.3"
   },
   "scripts": {
-    "start": "tsc ; nodemon ./dist/app",
-    "test": "tsc ; node ./dist/app"
+    "start": "tsc && nodemon ./dist/app"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,ts"
   }
-}
+} 
