@@ -93,7 +93,8 @@ router.post('/cookie', async (req, res) => {
 })
 router.get('/cookie', async (req, res) => {
     console.log(req.cookies);
-    res.status(200).send(req.cookies);
+    res.cookie('cookieName', 'Get pelo navegador!')
+    res.status(200).send(req.cookies); 
 })
 
 
