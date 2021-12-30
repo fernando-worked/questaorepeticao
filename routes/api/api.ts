@@ -13,6 +13,9 @@ router.get('/', (req, res) => {
 
 router.post('/novoUsuario', async (req, res) => {
     const resposta = new Resposta();
+
+    //TODO: Verificar se o contrato do JSON foi seguido.
+
     if (!EmailValidator.validate(req.body.txemail)) {
 
         resposta.setSucess(false);
@@ -32,7 +35,10 @@ router.post('/novoUsuario', async (req, res) => {
 
     }
 
-    const usuario = new Usuario(req.body.txemail, req.body.txsenha);
+    const usuario = new Usuario();
+    usuario.setEmail(req.body.txemail);
+    usuario.setSenha(req.body.txsenha);
+
     const usercontroler = new UserController(usuario);
 
     usercontroler.salvarUsuario();
@@ -42,6 +48,36 @@ router.post('/novoUsuario', async (req, res) => {
     resposta.setContent(usuario.getId);
 
     return res.status(201).json(resposta);
+
+})
+
+router.post('/login', async (req, res) => {
+    const resposta = new Resposta();
+    if (!EmailValidator.validate(req.body.txemail)) {
+
+        resposta.setSucess(false);
+        resposta.setCode(406);
+        resposta.setContent('E-mail inválido!');
+
+        return res.status(406).json(resposta);
+    }
+
+    const usuario = new Usuario();
+    const usercontroler = new UserController(usuario);
+
+    await usercontroler.findUserByCredentials(req.body.txemail, req.body.txsenha);
+
+    if (usercontroler.usuario.getEmail.length == 0) { 
+        resposta.setSucess(false);
+        resposta.setCode(200); 
+        resposta.setContent('Credencial inválida!');
+    } else {
+        resposta.setSucess(true);
+        resposta.setCode(200);
+        resposta.setContent(usercontroler.usuario);
+    }
+
+    return res.status(200).json(resposta);
 
 })
 

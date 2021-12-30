@@ -11,4 +11,20 @@ export async function emailJaCadastrado(txemail: string): Promise<boolean> {
     return result.rowCount == 0 ? false : true;
 }
 
-module.exports = { saveUser, emailJaCadastrado };    
+export async function findUserByCredentials(txemail: string, txsenha: string): Promise<Usuario> {
+    var result = await poolDB.query('select idusuario from usuario where txemail = $1 and txsenha = $2', [txemail, txsenha]);
+    console.log(result);
+
+    var usuario = new Usuario();
+
+    if (result.rowCount == 0) {
+        return usuario; 
+    }
+ 
+    usuario.setId(result.rows[0].idusuario);
+    usuario.setEmail(txemail);
+    return usuario; 
+
+}
+
+module.exports = { saveUser, emailJaCadastrado, findUserByCredentials };    
