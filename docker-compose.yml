@@ -1,10 +1,15 @@
 version: "3.7"
 services:
   app:
-    image: node:latest
-    command: node ./dist/app
+    image: app
+    working_dir: /usr/src/app/
+    command: node app
     ports:
       - 3000:3000
-    working_dir: /dist
-    volumes:
-      - ./:/app   
+    volumes:  
+      - /usr/src/app/
+      - /usr/src/node_modules/
+    build:
+      context: ./
+      dockerfile: app/Dockerfile
+ 
