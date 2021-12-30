@@ -9,7 +9,5 @@ services:
     volumes:  
       - /usr/src/app/
       - /usr/src/node_modules/
-    build:
-      context: ./
-      dockerfile: app/Dockerfile
+
  
