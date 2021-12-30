@@ -20,7 +20,7 @@ export class UserController {
 
         var senhaHash = crypto.createHash('md5')
             .update(this.usuario.getEmail)
-            .update(this.usuario.getSenha)
+            .update(this.usuario.getSenha) 
             .update(process.env.PASSWORD_SECRET)
             .digest("hex"); 
 

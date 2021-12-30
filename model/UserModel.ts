@@ -2,13 +2,12 @@ import { v4 as uuidv4 } from 'uuid';
 var crypto = require('crypto');
 
 export class Usuario {
-    private uid?: string;
-    private email: string;
-    private senha: string;
+    private uid: string = '';
+    private email: string = '';
+    private senha: string = '';
 
-    constructor(nome: string, senha: string) {
-        this.email = nome;
-        this.senha = senha;
+    constructor() { 
+
     }
 
     get getEmail() {
@@ -29,6 +28,10 @@ export class Usuario {
 
     setSenha(senha: string): void {
         this.senha = senha;
+    }
+
+    setEmail(txemail: string) {
+        this.email = txemail;
     }
 
 
