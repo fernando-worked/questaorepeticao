@@ -82,9 +82,9 @@ router.post('/login', async (req, res) => {
         resposta.setCode(200);
         resposta.setContent(token);
         res.cookie('TOKEN', token); 
-    }
+    } 
 
-    return res.status(200).json(resposta);
+    return res.status(200).json(resposta); 
 
 })
 
@@ -98,4 +98,4 @@ router.get('/cookie', async (req, res) => {
 })
 
 
-export default router;   
+export default router;    
