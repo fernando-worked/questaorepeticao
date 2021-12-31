@@ -1,13 +1,5 @@
 version: "3.7"
 services:
-  app:
-    image: app
-    working_dir: /usr/src/app/
-    command: node ./dist/app
-    ports:
-      - 3000:3000
-    environment:
-      HOST: db 
   db:
     image: postgres
     environment:
@@ -16,4 +8,16 @@ services:
       POSTGRES_DB: testes
     ports:
       - "5432:5432"
- 
+  app:
+    image: app 
+    working_dir: /usr/src/app/
+    restart: always
+    command: node ./dist/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - db 
+    environment: 
+      DATABASE_URL: ${DB_HOST}   
+
+      
