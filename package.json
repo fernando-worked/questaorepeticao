@@ -21,9 +21,10 @@
     "ts-node": "^10.4.0"
   },
   "scripts": {
-    "start": "tsc && nodemon app.ts"
+    "start": "tsc && nodemon app.ts",
+    "xablau": "npm install && tsc && nodemon app.ts"
   },
   "nodemonConfig": {
-    "ext": "js,json,ts"
-  } 
+    "ext": "js,json,ts" 
+  }
 }
