@@ -5,13 +5,14 @@ import { UserController } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
 var jwt = require('jsonwebtoken');
+import { verifyJWT } from '../../controller/middleware/VerifyJWT'
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    res.status(200).send('API ON'); 
-})
- 
+router.get('/', verifyJWT, (req, res) => {
+    res.status(200).send('API ON');
+})   
+
 router.post('/novoUsuario', async (req, res) => {
     const resposta = new Resposta();
 
@@ -81,12 +82,12 @@ router.post('/login', async (req, res) => {
         resposta.setSucess(true);
         resposta.setCode(200);
         resposta.setContent(token);
-        res.cookie('TOKEN', token); 
-    } 
+        res.cookie('TOKEN', token);
+    }
 
-    return res.status(200).json(resposta);  
+    return res.status(200).json(resposta);
 
-}) 
+})
 
 router.post('/cookie', async (req, res) => {
     res.cookie('cookieName', 'cookieValue').send();
@@ -94,7 +95,7 @@ router.post('/cookie', async (req, res) => {
 router.get('/cookie', async (req, res) => {
     console.log(req.cookies);
     res.cookie('cookieName', 'Get pelo navegador!')
-    res.status(200).send(req.cookies); 
+    res.status(200).send(req.cookies);
 })
 
 
