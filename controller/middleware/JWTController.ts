@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+export var jwt = require('jsonwebtoken');
 
 export function verifyJWT(req: any, res: any, next: any) {
     console.log('chamado JWT');
@@ -15,4 +15,4 @@ export function verifyJWT(req: any, res: any, next: any) {
 } 
 
 
-module.exports = { verifyJWT }
+module.exports = { verifyJWT, jwt}

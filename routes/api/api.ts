@@ -4,8 +4,7 @@ import { Usuario } from '../../model/UserModel'
 import { UserController } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
-var jwt = require('jsonwebtoken');
-import { verifyJWT } from '../../controller/middleware/VerifyJWT'
+import { verifyJWT, jwt } from '../../controller/middleware/JWTController'
 
 const router = Router();
 
