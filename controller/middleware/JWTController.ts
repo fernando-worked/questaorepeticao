@@ -1,3 +1,5 @@
+import { Usuario } from "../../model/UserModel";
+
 export var jwt = require('jsonwebtoken');
 
 export function verificarJWT(req: any, res: any, next: any) {
@@ -14,7 +16,7 @@ export function verificarJWT(req: any, res: any, next: any) {
    
 }
 
-export function assinar(payload: any){
+export function assinar(payload: Usuario){
     const token = jwt.sign({ payload }, process.env.JWT_SECRET, {
         expiresIn: 60 * 60 * 12 // expires in 12h 
     });
@@ -23,6 +25,14 @@ export function assinar(payload: any){
 
 }
 
+export function usuarioAutenticado(req: any, res: any, next: any){
+    res.cookie('cookieName', 'cookieValue');
+    console.log('teste');
+    console.log(req.cookies);
+    next();
+
+}
 
 
-module.exports = { verificarJWT, assinar}
+
+module.exports = { verificarJWT, assinar, usuarioAutenticado}

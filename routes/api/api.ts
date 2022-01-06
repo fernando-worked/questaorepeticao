@@ -4,11 +4,12 @@ import { Usuario } from '../../model/UserModel'
 import { UserController } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
-import { verificarJWT, jwt, assinar } from '../../controller/middleware/JWTController'
+import { verificarJWT, usuarioAutenticado, assinar } from '../../controller/middleware/JWTController'
+import { nextTick } from 'process';
 
 const router = Router();
 
-router.get('/', verificarJWT, (req, res) => {
+router.get('/', usuarioAutenticado, (req, res) => {
     res.status(200).send('API ON');
 })   
 
@@ -84,6 +85,16 @@ router.post('/login', async (req, res) => {
 
     return res.status(200).json(resposta);
 
+})
+
+router.post('/matricular', usuarioAutenticado, async (req, res) => {
+
+    /* Autenticar usuario
+    verificar se é um id valido
+    verificar se o curso aceita matricula
+    verificar se o usuario ja nao esta matriculado
+    matricular */
+    res.cookie('cookieName', 'cookieValue').send();
 })
 
 router.post('/cookie', async (req, res) => {
