@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
         resposta.setSucess(true);
         resposta.setCode(200);
         resposta.setContent(token);
-        res.cookie('TOKEN', token);
+        res.cookie('TOKEN', token); 
     }
 
     return res.status(200).json(resposta);
