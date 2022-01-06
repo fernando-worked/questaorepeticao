@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
             expiresIn: 60 * 60 * 12 // expires in 12h 
         });
 
-        resposta.setSucess(true);
+        resposta.setSucess(true); 
         resposta.setCode(200);
         resposta.setContent(token);
         res.cookie('TOKEN', token); 
