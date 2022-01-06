@@ -4,11 +4,11 @@ import { Usuario } from '../../model/UserModel'
 import { UserController } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
-import { verifyJWT, jwt } from '../../controller/middleware/JWTController'
+import { verificarJWT, jwt, assinar } from '../../controller/middleware/JWTController'
 
 const router = Router();
 
-router.get('/', verifyJWT, (req, res) => {
+router.get('/', verificarJWT, (req, res) => {
     res.status(200).send('API ON');
 })   
 
@@ -74,9 +74,7 @@ router.post('/login', async (req, res) => {
         resposta.setContent('Credencial inválida!');
     } else {
         usuario = usercontroler.getUser;
-        const token = jwt.sign({ usuario }, process.env.JWT_SECRET, {
-            expiresIn: 60 * 60 * 12 // expires in 12h 
-        });
+        const token = assinar(usuario);
 
         resposta.setSucess(true); 
         resposta.setCode(200);
