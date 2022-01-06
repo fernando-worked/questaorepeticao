@@ -90,6 +90,8 @@ router.post('/login', async (req, res) => {
 router.post('/matricular', usuarioAutenticado, async (req, res) => {
 
     /* Autenticar usuario
+    verificar se a requisicao tem um token de usuario
+    verificar o jwt (caso vencido renovar)
     verificar se é um id valido
     verificar se o curso aceita matricula
     verificar se o usuario ja nao esta matriculado
