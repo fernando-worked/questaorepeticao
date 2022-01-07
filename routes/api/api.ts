@@ -4,7 +4,7 @@ import { Usuario } from '../../model/UserModel'
 import { UserController } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
-import { verificarJWT, usuarioAutenticado, assinar } from '../../controller/middleware/JWTController'
+import { verificarJWT, usuarioAutenticado, assinar } from '../../controller/middleware/AuthController'
 import { nextTick } from 'process';
 
 const router = Router();

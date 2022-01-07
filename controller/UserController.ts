@@ -1,5 +1,5 @@
 import { Usuario } from '../model/UserModel'
-import { saveUser, findUserByCredentials } from '../model/repository//UserRepository'
+import { saveUser, findUserByCredentials, findUserById } from '../model/repository//UserRepository'
 import { v4 as uuidv4 } from 'uuid';
 var crypto = require('crypto');
 
@@ -42,6 +42,10 @@ export class UserController {
 
         var usuario = await findUserByCredentials(txemail, senhaHash);
         this.usuario = usuario;
+    }
+
+    public async findUserById(uid: string) {
+        this.usuario = await findUserById(uid);
     }
 }
 

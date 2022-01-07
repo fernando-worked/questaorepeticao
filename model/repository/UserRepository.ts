@@ -16,13 +16,29 @@ export async function findUserByCredentials(txemail: string, txsenha: string): P
     var usuario = new Usuario();
 
     if (result.rowCount == 0) {
-        return usuario; 
+        return usuario;
     }
- 
+
     usuario.setId(result.rows[0].idusuario);
     usuario.setEmail(txemail);
-    return usuario; 
+    return usuario;
 
 }
 
-module.exports = { saveUser, emailJaCadastrado, findUserByCredentials };    
+export async function findUserById(uid: string): Promise<Usuario> {
+    var result = await poolDB.query('select idusuario, txemail from usuario where idusuario = $1', [uid]);
+    var usuario = new Usuario(); 
+
+
+
+    if (result.rowCount == 0) {
+        return usuario;
+    }
+
+    usuario.setId(result.rows[0].idusuario);
+    usuario.setEmail(result.rows[0].txemail);
+    return usuario;
+
+}
+
+module.exports = { saveUser, emailJaCadastrado, findUserByCredentials, findUserById };    
