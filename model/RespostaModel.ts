@@ -35,6 +35,10 @@ export class Resposta {
         this.sucess = false;
         this.content = content;
     }
+    setOk(content: any) {
+        this.sucess = true;
+        this.content = content;
+    }
 }
 
 module.exports = { Resposta };

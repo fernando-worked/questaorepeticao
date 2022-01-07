@@ -99,6 +99,7 @@ router.post('/matricular', usuarioAutenticado, async (req, res) => {
         if (!(await UsuarioJaMatriculado(res.locals.usuario.uid, req.body.idcurso))) {
             console.log('Pode se matricular!');
             matricula(res.locals.usuario.uid, req.body.idcurso);
+            resposta.setOk('{"'+res.locals.usuario.uid+'","'+req.body.idcurso+'"}')
         } else {
             resposta.setError('Usuário já matriculado!')
         }
@@ -107,7 +108,7 @@ router.post('/matricular', usuarioAutenticado, async (req, res) => {
     }
 
     return res.status(200).json(resposta);
-})
+}) 
 
 
 
