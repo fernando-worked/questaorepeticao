@@ -11,7 +11,7 @@ const router = Router();
 
 router.get('/', usuarioAutenticado, (req, res) => {
     res.status(200).send('API ON');
-})   
+})
 
 router.post('/novoUsuario', async (req, res) => {
     const resposta = new Resposta();
@@ -49,6 +49,8 @@ router.post('/novoUsuario', async (req, res) => {
     resposta.setCode(201);
     resposta.setContent(usuario.getId);
 
+    res.clearCookie("TOKEN");
+
     return res.status(201).json(resposta);
 
 })
@@ -77,10 +79,10 @@ router.post('/login', async (req, res) => {
         usuario = usercontroler.getUser;
         const token = assinar(usuario);
 
-        resposta.setSucess(true); 
+        resposta.setSucess(true);
         resposta.setCode(200);
         resposta.setContent(token);
-        res.cookie('TOKEN', token); 
+        res.cookie('TOKEN', token);
     }
 
     return res.status(200).json(resposta);

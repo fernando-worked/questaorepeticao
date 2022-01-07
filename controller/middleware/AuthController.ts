@@ -12,7 +12,6 @@ export function verificarJWT(req: any, res: any, next: any) {
 
         // se tudo estiver ok, salva no request para uso posterior
         res.locals.usuario = decoded.payload;
-        console.log(req.cookies);
         next();
     });
 
@@ -29,29 +28,34 @@ export function assinar(payload: Usuario) {
 }
 
 export function usuarioAutenticado(req: any, res: any, next: any) {
-    const token = req.cookies['TOKEN'];
+    let token = req.cookies['TOKEN'];
 
-    if (token == null) {
+    if (token == null) { /*caso não possua cookies de login, redireciona para login*/
         res.redirect('/login');
     } else {
         jwt.verify(token, process.env.JWT_SECRET, async function (err: any, decoded: any) {
 
             if (err) {
                 if (err.name == 'TokenExpiredError') {
-                    const payload = jwt.verify(token, process.env.JWT_SECRET, { ignoreExpiration: true });
-                    var usuario = new Usuario();
-                    const usercontroler = new UserController(usuario);
-                    console.log(payload.email);
-                    await usercontroler.findUserById(payload.uid);
-                    res.locals.usuario = usercontroler.getUser;
-                    next();
- 
-                } else { 
+
+                    jwt.verify(token, process.env.JWT_SECRET, { ignoreExpiration: true }, async function (err: any, decoded: any) {
+                        var usuario = new Usuario();
+                        const usercontroler = new UserController(usuario);
+                        await usercontroler.findUserById(decoded.payload.uid);
+                        token = assinar(usercontroler.getUser);
+                        res.cookie('TOKEN', token);
+                        res.locals.usuario = usercontroler.getUser;
+                        next();
+
+                    });
+
+
+                } else { /* qualquer erro de token diferente de expirado */
                     res.redirect('/login');
-                    console.log(err.name);
+
                 }
 
-            } else {
+            } else { /* caso token esteja ok */
                 res.locals.usuario = decoded.payload;
                 next();
             }
