@@ -47,7 +47,7 @@ export class UserController {
     public async findUserById(uid: string) {
         this.usuario = await findUserById(uid);
     }
-} 
+}
 
 export async function UsuarioJaMatriculado(idusuario: string, idcurso: string) {
     return await userJaMatriculado(idusuario, idcurso)

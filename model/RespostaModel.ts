@@ -30,6 +30,11 @@ export class Resposta {
     setSucess(sucess: boolean) {
         this.sucess = sucess;
     }
+
+    setError(content: any) {
+        this.sucess = false;
+        this.content = content;
+    }
 }
 
 module.exports = { Resposta };

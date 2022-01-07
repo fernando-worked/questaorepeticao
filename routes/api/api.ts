@@ -15,7 +15,7 @@ router.get('/', usuarioAutenticado, (req, res) => {
 })
 
 router.post('/novoUsuario', async (req, res) => {
-    const resposta = new Resposta(); 
+    const resposta = new Resposta();
 
     //TODO: Verificar se o contrato do JSON foi seguido.
 
@@ -91,23 +91,22 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/matricular', usuarioAutenticado, async (req, res) => {
+    const resposta = new Resposta();
     var curso = await buscarCursoPorId(req.body.idcurso);
 
 
     if (curso) {
         if (!(await UsuarioJaMatriculado(res.locals.usuario.uid, req.body.idcurso))) {
             console.log('Pode se matricular!');
-            matricula(res.locals.usuario.uid, req.body.idcurso); 
+            matricula(res.locals.usuario.uid, req.body.idcurso);
+        } else {
+            resposta.setError('Usuário já matriculado!')
         }
+    } else {
+        resposta.setError('Curso inválido!')
     }
 
-    /* Autenticar usuario
-    verificar se a requisicao tem um token de usuario
-    verificar o jwt (caso vencido renovar)
-    verificar se é um id valido
-    verificar se o usuario ja nao esta matriculado
-    matricular */
-    return res.json(req.body); 
+    return res.status(200).json(resposta);
 })
 
 
