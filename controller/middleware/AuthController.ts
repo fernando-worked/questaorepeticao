@@ -31,7 +31,7 @@ export function usuarioAutenticado(req: any, res: any, next: any) {
     let token = req.cookies['TOKEN'];
 
     if (token == null) { /*caso não possua cookies de login, redireciona para login*/
-        res.redirect('/login');
+        res.redirect('/');
     } else {
         jwt.verify(token, process.env.JWT_SECRET, async function (err: any, decoded: any) {
 
@@ -51,7 +51,7 @@ export function usuarioAutenticado(req: any, res: any, next: any) {
 
 
                 } else { /* qualquer erro de token diferente de expirado */
-                    res.redirect('/login');
+                    res.redirect('/');
 
                 }
 
