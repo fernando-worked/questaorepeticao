@@ -8,7 +8,6 @@ router.get('/', (req, res) => {
 })
 
 router.get('/mesadeestudo', usuarioAutenticado, (req, res) => {
-    console.log(res.locals.usuario.uid);
     res.status(200).send('Mesa de Estudo');
 })
 

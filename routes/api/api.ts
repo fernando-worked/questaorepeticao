@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { emailJaCadastrado } from '../../model/repository/UserRepository';
 import { Usuario } from '../../model/UserModel'
-import { UserController } from '../../controller/UserController';
+import { UserController, UsuarioJaMatriculado, matricula } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
 import { Resposta } from '../../model/RespostaModel';
-import { verificarJWT, usuarioAutenticado, assinar } from '../../controller/middleware/AuthController'
-import { nextTick } from 'process';
+import { usuarioAutenticado, assinar } from '../../controller/middleware/AuthController'
+import { buscarCursoPorId } from '../../controller/CursoController';
+
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get('/', usuarioAutenticado, (req, res) => {
 })
 
 router.post('/novoUsuario', async (req, res) => {
-    const resposta = new Resposta();
+    const resposta = new Resposta(); 
 
     //TODO: Verificar se o contrato do JSON foi seguido.
 
@@ -90,25 +91,26 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/matricular', usuarioAutenticado, async (req, res) => {
+    var curso = await buscarCursoPorId(req.body.idcurso);
+
+
+    if (curso) {
+        if (!(await UsuarioJaMatriculado(res.locals.usuario.uid, req.body.idcurso))) {
+            console.log('Pode se matricular!');
+            matricula(res.locals.usuario.uid, req.body.idcurso); 
+        }
+    }
 
     /* Autenticar usuario
     verificar se a requisicao tem um token de usuario
     verificar o jwt (caso vencido renovar)
     verificar se é um id valido
-    verificar se o curso aceita matricula
     verificar se o usuario ja nao esta matriculado
     matricular */
-    res.cookie('cookieName', 'cookieValue').send();
+    return res.json(req.body); 
 })
 
-router.post('/cookie', async (req, res) => {
-    res.cookie('cookieName', 'cookieValue').send();
-})
-router.get('/cookie', async (req, res) => {
-    console.log(req.cookies);
-    res.cookie('cookieName', 'Get pelo navegador!')
-    res.status(200).send(req.cookies);
-})
+
 
 
 export default router;    

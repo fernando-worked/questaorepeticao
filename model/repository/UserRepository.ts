@@ -27,7 +27,7 @@ export async function findUserByCredentials(txemail: string, txsenha: string): P
 
 export async function findUserById(uid: string): Promise<Usuario> {
     var result = await poolDB.query('select idusuario, txemail from usuario where idusuario = $1', [uid]);
-    var usuario = new Usuario(); 
+    var usuario = new Usuario();
 
 
 
@@ -41,4 +41,21 @@ export async function findUserById(uid: string): Promise<Usuario> {
 
 }
 
-module.exports = { saveUser, emailJaCadastrado, findUserByCredentials, findUserById };    
+export async function userJaMatriculado(idusuario: string, idcurso: string): Promise<Boolean> {
+    var result = await poolDB.query('select idusuariocurso from usuario_curso where idusuario = $1 and idcurso = $2', [idusuario, idcurso]);
+
+    if (result.rowCount == 0) {
+        return false;
+    }
+
+    return true;
+
+}
+
+export async function matricular(idmatricula: string, idusuario: string, idcurso: string) {
+    await poolDB.query("insert into usuario_curso (idusuariocurso, idcurso, idusuario) values ($1, $2, $3)", [idmatricula, idcurso, idusuario]);
+
+
+}
+
+module.exports = { saveUser, emailJaCadastrado, findUserByCredentials, findUserById, userJaMatriculado, matricular };    

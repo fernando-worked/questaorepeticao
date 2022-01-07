@@ -1,5 +1,5 @@
 import { Usuario } from '../model/UserModel'
-import { saveUser, findUserByCredentials, findUserById } from '../model/repository//UserRepository'
+import { saveUser, findUserByCredentials, findUserById, userJaMatriculado, matricular } from '../model/repository//UserRepository'
 import { v4 as uuidv4 } from 'uuid';
 var crypto = require('crypto');
 
@@ -47,6 +47,14 @@ export class UserController {
     public async findUserById(uid: string) {
         this.usuario = await findUserById(uid);
     }
+} 
+
+export async function UsuarioJaMatriculado(idusuario: string, idcurso: string) {
+    return await userJaMatriculado(idusuario, idcurso)
 }
 
-module.exports = { UserController }  
+export async function matricula(idusuario: string, idcurso: string) {
+    matricular(uuidv4(), idusuario, idcurso);
+}
+
+module.exports = { UserController, UsuarioJaMatriculado, matricula }  
