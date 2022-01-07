@@ -1,8 +1,13 @@
+export const responseCode = {
+    OK: 200,
+    CREATED: 201
+};
+
 export class Resposta {
     private sucess?: boolean;
-    private code?: number;
     private content?: any;
 
+  
     constructor() {
 
     }
@@ -11,22 +16,13 @@ export class Resposta {
         return this.sucess;
     }
 
-    get getCode() {
-        return this.code;
-    }
 
     get getContent() {
         return this.content;
     }
-
     setContent(content: any) {
         this.content = content;
     }
-
-    setCode(code: number) {
-        this.code = code;
-    }
-
     setSucess(sucess: boolean) {
         this.sucess = sucess;
     }
@@ -41,4 +37,4 @@ export class Resposta {
     }
 }
 
-module.exports = { Resposta };
+module.exports = { Resposta, responseCode };
