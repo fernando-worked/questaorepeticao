@@ -3,7 +3,7 @@ import { emailJaCadastrado } from '../../model/repository/UserRepository';
 import { Usuario } from '../../model/UserModel'
 import { UserController, UsuarioJaMatriculado, matricula } from '../../controller/UserController';
 import * as EmailValidator from 'email-validator';
-import { Resposta } from '../../model/RespostaModel';
+import { Resposta, responseCode} from '../../model/RespostaModel';
 import { usuarioAutenticado, assinar } from '../../controller/middleware/AuthController'
 import { buscarCursoPorId } from '../../controller/CursoController';
 
@@ -21,18 +21,14 @@ router.post('/novoUsuario', async (req, res) => {
 
     if (!EmailValidator.validate(req.body.txemail)) {
 
-        resposta.setSucess(false);
-        resposta.setCode(406);
-        resposta.setContent('E-mail inválido!');
+        resposta.setError('E-mail inválido!');
 
         return res.status(406).json(resposta);
     }
 
     if (await emailJaCadastrado(req.body.txemail)) {
 
-        resposta.setSucess(false);
-        resposta.setCode(406);
-        resposta.setContent('E-mail já cadastrado!');
+        resposta.setError('E-mail já cadastrado!');
 
         return res.status(406).json(resposta);
 
@@ -46,13 +42,11 @@ router.post('/novoUsuario', async (req, res) => {
 
     usercontroler.salvarUsuario();
 
-    resposta.setSucess(true);
-    resposta.setCode(201);
-    resposta.setContent(usuario.getId);
+    resposta.setOk(usuario.getId)
 
     res.clearCookie("TOKEN");
 
-    return res.status(201).json(resposta);
+    return res.status(responseCode.CREATED).json(resposta);
 
 })
 
@@ -60,11 +54,8 @@ router.post('/login', async (req, res) => {
     const resposta = new Resposta();
     if (!EmailValidator.validate(req.body.txemail)) {
 
-        resposta.setSucess(false);
-        resposta.setCode(406);
-        resposta.setContent('E-mail inválido!');
-
-        return res.status(406).json(resposta);
+        resposta.setError('E-mail inválido!');
+        return res.status(responseCode.OK).json(resposta);
     }
 
     var usuario = new Usuario();
@@ -73,20 +64,21 @@ router.post('/login', async (req, res) => {
     await usercontroler.findUserByCredentials(req.body.txemail, req.body.txsenha);
 
     if (usercontroler.getUser.getEmail.length == 0) {
-        resposta.setSucess(false);
-        resposta.setCode(200);
-        resposta.setContent('Credencial inválida!');
+        resposta.setError('Credencial inválida!');
     } else {
         usuario = usercontroler.getUser;
         const token = assinar(usuario);
-
-        resposta.setSucess(true);
-        resposta.setCode(200);
-        resposta.setContent(token);
+        resposta.setOk(token);
         res.cookie('TOKEN', token);
     }
 
-    return res.status(200).json(resposta);
+    return res.status(responseCode.OK).json(resposta);
+
+})
+
+router.post('/logout', usuarioAutenticado, async (req, res) => {
+    res.clearCookie('TOKEN').status(responseCode.OK);
+    res.redirect('/');
 
 })
 
@@ -99,7 +91,7 @@ router.post('/matricular', usuarioAutenticado, async (req, res) => {
         if (!(await UsuarioJaMatriculado(res.locals.usuario.uid, req.body.idcurso))) {
             console.log('Pode se matricular!');
             matricula(res.locals.usuario.uid, req.body.idcurso);
-            resposta.setOk('{"'+res.locals.usuario.uid+'","'+req.body.idcurso+'"}')
+            resposta.setOk({usuario: res.locals.usuario.uid, curso: req.body.idcurso});
         } else {
             resposta.setError('Usuário já matriculado!')
         }
@@ -107,10 +99,8 @@ router.post('/matricular', usuarioAutenticado, async (req, res) => {
         resposta.setError('Curso inválido!')
     }
 
-    return res.status(200).json(resposta);
+    return res.status(responseCode.OK).json(resposta);
 }) 
-
-
 
 
 export default router;    
