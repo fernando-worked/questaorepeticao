@@ -11,7 +11,7 @@ import { buscarCursoPorId } from '../../controller/CursoController';
 const router = Router();
 
 router.get('/', usuarioAutenticado, (req, res) => {
-    res.status(200).send('API ON');
+    res.status(responseCode.OK).send('API ON');
 })
 
 router.post('/novoUsuario', async (req, res) => {
@@ -89,7 +89,6 @@ router.post('/matricular', usuarioAutenticado, async (req, res) => {
 
     if (curso) {
         if (!(await UsuarioJaMatriculado(res.locals.usuario.uid, req.body.idcurso))) {
-            console.log('Pode se matricular!');
             matricula(res.locals.usuario.uid, req.body.idcurso);
             resposta.setOk({usuario: res.locals.usuario.uid, curso: req.body.idcurso});
         } else {

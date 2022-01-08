@@ -1,6 +1,7 @@
 export const responseCode = {
     OK: 200,
-    CREATED: 201
+    CREATED: 201,
+    UNAUTHORIZED: 401
 };
 
 export class Resposta {
